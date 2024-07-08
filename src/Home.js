@@ -31,7 +31,7 @@ function Home() {
 
   return (
     <div className="App">
-      <h1>Welcome</h1>
+      <h1>Welcome to our app</h1>
       <div>
         <label htmlFor="text-context-select">Choose a text edition:</label>
         <select id="text-context-select" onChange={handleTextContextChange} value={textContext?.identifier || ''}>
