@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import EditionContext from './EditionContext';
@@ -23,7 +24,7 @@ const Surah = () => {
       fetchSurahData(item.number);
     }
     if (textContext === null || translationContext === null) {
-      setError('Text or Translation context is not set properly.');
+      setError('Text or Translation context is not set properly');
       console.log('error:', error);
       setLoading(true);
       return;
@@ -52,7 +53,7 @@ const Surah = () => {
         setLoading(false);
       });
 
-      if (number != 1 && number !=9) {
+      if (number !== 1 && number !== 9) {
         axios.get(`https://api.alquran.cloud/v1/surah/1/editions/${textContext.identifier}`)
         .then(response => {
           const firstAyahList = response.data.data[0].ayahs;
@@ -79,7 +80,7 @@ const Surah = () => {
   };
 
   if (error) {
-    return <div className='body error-message'>{error}. To set it properly, go to <a href="/home">Settings</a> page.</div>;
+    return <div className='body error-message'>{error}. To set it properly, go to <Link to="/home">Settings</Link> page.</div>;
   }
 
   return (

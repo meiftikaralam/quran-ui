@@ -9,7 +9,10 @@ function Home() {
   useEffect(() => {
     axios.get('https://api.alquran.cloud/v1/edition')
       .then(response => {
-        setEditions(response.data.data);
+        const filteredEditions = response.data.data.filter(
+          edition => edition.identifier === 'bn.bengali' || edition.identifier === 'en.sahih'
+        );
+        setEditions(filteredEditions);
         const selectedTextContext = response.data.data.find(edition => edition.identifier === 'quran-unicode');
         setTextContext(selectedTextContext);
       })
