@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/meiftikaralam/quran-ui/static/css/main.9e5a1512.css",
-    "main.js": "/meiftikaralam/quran-ui/static/js/main.bb5a4569.js",
-    "static/js/453.e2c92926.chunk.js": "/meiftikaralam/quran-ui/static/js/453.e2c92926.chunk.js",
-    "static/media/alameducity.png": "/meiftikaralam/quran-ui/static/media/alameducity.8d8406f6cd2707b1adb6.png",
-    "index.html": "/meiftikaralam/quran-ui/index.html",
-    "main.9e5a1512.css.map": "/meiftikaralam/quran-ui/static/css/main.9e5a1512.css.map",
-    "main.bb5a4569.js.map": "/meiftikaralam/quran-ui/static/js/main.bb5a4569.js.map",
-    "453.e2c92926.chunk.js.map": "/meiftikaralam/quran-ui/static/js/453.e2c92926.chunk.js.map"
+    "main.css": "/quran-ui/static/css/main.9e5a1512.css",
+    "main.js": "/quran-ui/static/js/main.49a7f79e.js",
+    "static/js/453.e2c92926.chunk.js": "/quran-ui/static/js/453.e2c92926.chunk.js",
+    "static/media/alameducity.png": "/quran-ui/static/media/alameducity.8d8406f6cd2707b1adb6.png",
+    "index.html": "/quran-ui/index.html",
+    "main.9e5a1512.css.map": "/quran-ui/static/css/main.9e5a1512.css.map",
+    "main.49a7f79e.js.map": "/quran-ui/static/js/main.49a7f79e.js.map",
+    "453.e2c92926.chunk.js.map": "/quran-ui/static/js/453.e2c92926.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9e5a1512.css",
-    "static/js/main.bb5a4569.js"
+    "static/js/main.49a7f79e.js"
   ]
 }
