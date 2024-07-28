@@ -9,23 +9,33 @@ const Surah = () => {
   const location = useLocation();
   const { item, surahList } = location.state || { item: {}, surahList: [] };
   const [ayahList, setAyahList] = useState([]);
+  const [bismillahAyah, setBismillahAyah] = useState([]);
   const [edition, setEdition] = useState([]);
   const [translatedEdition, setTranslatedEdition] = useState([]);
   const [translatedAyahList, setTranslatedAyahList] = useState([]);
   const [selectedItem, setSelectedItem] = useState(item);
   const [loading, setLoading] = useState(false);
   const { textContext, translationContext } = useContext(EditionContext);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (item && item.number && textContext && translationContext) {
       fetchSurahData(item.number);
     }
+    if (textContext === null || translationContext === null) {
+      setError('Text or Translation context is not set properly.');
+      console.log('error:', error);
+      setLoading(true);
+      return;
+    }
   }, [item, textContext, translationContext]);
 
   const fetchSurahData = (number) => {
     setLoading(true);
+    setError(null);
     console.log('textContext', textContext);
     console.log('translationContext', translationContext);
+
     axios.get(`https://api.alquran.cloud/v1/surah/${number}/editions/${textContext.identifier},${translationContext.identifier}`)
       .then(response => {
         const ayahList = response.data.data[0].ayahs;
@@ -41,6 +51,24 @@ const Surah = () => {
       .finally(() => {
         setLoading(false);
       });
+
+      if (number != 1 && number !=9) {
+        axios.get(`https://api.alquran.cloud/v1/surah/1/editions/${textContext.identifier}`)
+        .then(response => {
+          const firstAyahList = response.data.data[0].ayahs;
+          setBismillahAyah(firstAyahList[0].text);
+          console.log('BismillahAyah:', bismillahAyah);
+        })
+        .catch(error => {
+          console.error('There was an error!', error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+      } else {
+        console.log('Clean up bismillahAyah:', bismillahAyah);
+        setBismillahAyah(null);
+      }
   };
 
   const handleSelectionChange = (event) => {
@@ -49,6 +77,10 @@ const Surah = () => {
     setSelectedItem(selected);
     fetchSurahData(itemNumber);
   };
+
+  if (error) {
+    return <div className='body error-message'>{error}. To set it properly, go to <a href="/home">Settings</a> page.</div>;
+  }
 
   return (
     <div className='surah'>
@@ -66,6 +98,7 @@ const Surah = () => {
         <div>
           <h2>Surah #: {selectedItem.number}</h2>
           <h1 style={{ textAlign: 'center' }}>{selectedItem.name} ({selectedItem.englishName})</h1>
+          <h3 style={{ textAlign: 'center' }}>{bismillahAyah}</h3>
           {ayahList.map((ayah, index) => (
             <div key={index}>
               

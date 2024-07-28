@@ -33,7 +33,7 @@ function HolyQuran() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="body">
       <div className="thumbnail-container">
         {items.map((item, index) => (
           <div key={index} className="thumbnail">

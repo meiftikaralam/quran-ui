@@ -7,11 +7,12 @@ const Header = () => {
   return (
     <header className="header">
       <div className="left-section">
-        <img src={{logo}} alt="alameducity.com" width="200" height="60" />
-        <span className="title">alameducity.com</span>
+        <img src={logo} alt="alameducity.com" width="100" height="100" />
+        <br/>
+        <span className="tagline">Learn, Excel & Enlighten</span>
       </div>
       <nav className="right-section">
-        <Link to="/home" className="nav-item">Home</Link>
+        <Link to="/home" className="nav-item">Settings</Link>
         <Link to="/quran" className="nav-item">The Holy Quran</Link>
       </nav>
     </header>

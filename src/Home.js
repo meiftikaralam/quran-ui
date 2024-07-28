@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import Welcome from './Welcome';
 import EditionContext from './EditionContext';
 
 function Home() {
@@ -25,9 +24,16 @@ function Home() {
     setTranslationContext(selectedTranslationContext);
   };
 
+  const handleSave = () => {
+    // Save the current context states
+    setTextContext(textContext);
+    setTranslationContext(translationContext);
+    console.log('Context saved:', { textContext, translationContext });
+  };
+
   return (
-    <div className="App">
-      <h1>Welcome to alameducity</h1>
+    <div className="body">
+      <h1>Settings</h1>
       <h2>Learn, Excel and Enlighten</h2>
       <div>
         <label htmlFor="text-context-select">Choose a text edition:</label>
@@ -49,7 +55,7 @@ function Home() {
           ))}
         </select>
       </div>
-      <Welcome />
+      <button onClick={handleSave}>Save</button>
     </div>
   );
 }
