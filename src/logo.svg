@@ -1,7 +1,0 @@
-<svg width="200" height="50" xmlns="http://www.w3.org/2000/svg">
-  <!-- Blue Circle -->
-  <circle cx="25" cy="25" r="20" fill="#0000FF" />
-  
-  <!-- Text -->
-  <text x="60" y="30" font-family="Arial" font-size="24" fill="#0000FF">educity quran</text>
-</svg>

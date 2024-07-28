@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import EditionContext from './EditionContext';
 import './App.css';
+import './css/font-kitab.css';
 
 const Surah = () => {
   const location = useLocation();
@@ -68,7 +69,7 @@ const Surah = () => {
           {ayahList.map((ayah, index) => (
             <div key={index}>
               
-              <p style={{ textAlign: edition.direction === 'rtl' ? 'right' : 'left', fontSize: '2em' }}>{ayah.text}
+              <p className="font-kitab" style={{ textAlign: edition.direction === 'rtl' ? 'right' : 'left', fontSize: '2em' }}>{ayah.text}
 
               <span data-font-scale="3" data-font="code_v1" className="glyph-word"> ({ayah.numberInSurah})</span>
               </p>
