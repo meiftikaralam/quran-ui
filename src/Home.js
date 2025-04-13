@@ -23,12 +23,14 @@ function Home() {
         );
         setEditions(filteredEditions);
         const selectedTextContext = response.data.data.find(edition => edition.identifier === 'quran-unicode');
+        const selectedTranslationContext = response.data.data.find(edition => edition.identifier === 'en.sahih');
         setTextContext(selectedTextContext);
+        setTranslationContext(selectedTranslationContext);
       })
       .catch(error => {
         console.error('There was an error fetching the editions!', error);
       });
-  }, [setTextContext]);
+  }, [setTextContext, setTranslationContext]);
 
   const handleTranslationContextChange = (value) => {
     const selectedTranslationContext = editions.find(edition => edition.identifier === value);

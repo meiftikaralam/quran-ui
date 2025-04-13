@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import EditionContext from './EditionContext';
@@ -8,6 +8,7 @@ import './css/font-kitab.css';
 
 const Surah = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { item, surahList } = location.state || { item: {}, surahList: [] };
   const [ayahList, setAyahList] = useState([]);
   const [bismillahAyah, setBismillahAyah] = useState([]);
@@ -20,16 +21,15 @@ const Surah = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (item && item.number && textContext && translationContext) {
-      fetchSurahData(item.number);
-    }
-    if (textContext === null || translationContext === null) {
-      setError('Text or Translation context is not set properly');
-      console.log('error:', error);
-      setLoading(true);
+    if (!textContext || !translationContext) {
+      navigate('/home');
       return;
     }
-  }, [item, textContext, translationContext]);
+
+    if (item && item.number) {
+      fetchSurahData(item.number);
+    }
+  }, [item, textContext, translationContext, navigate]);
 
   const fetchSurahData = (number) => {
     setLoading(true);
@@ -79,8 +79,8 @@ const Surah = () => {
     fetchSurahData(itemNumber);
   };
 
-  if (error) {
-    return <div className='body error-message'>{error}. To set it properly, go to <Link to="/home">Settings</Link> page.</div>;
+  if (loading) {
+    return <div className='body'>Loading...</div>;
   }
 
   return (
@@ -93,25 +93,19 @@ const Surah = () => {
           ))}
         </select>
       </div>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          <h2>Surah #: {selectedItem.number}</h2>
-          <h1 style={{ textAlign: 'center' }}>{selectedItem.name} ({selectedItem.englishName})</h1>
-          <h3 style={{ textAlign: 'center' }}>{bismillahAyah}</h3>
-          {ayahList.map((ayah, index) => (
-            <div key={index}>
-              
-              <p className="font-kitab" style={{ textAlign: edition.direction === 'rtl' ? 'right' : 'left', fontSize: '2em' }}>{ayah.text}
-
+      <div>
+        <h2>Surah #: {selectedItem.number}</h2>
+        <h1 style={{ textAlign: 'center' }}>{selectedItem.name} ({selectedItem.englishName})</h1>
+        <h3 style={{ textAlign: 'center' }}>{bismillahAyah}</h3>
+        {ayahList.map((ayah, index) => (
+          <div key={index}>
+            <p className="font-kitab" style={{ textAlign: edition.direction === 'rtl' ? 'right' : 'left', fontSize: '2em' }}>{ayah.text}
               <span data-font-scale="3" data-font="code_v1" className="glyph-word"> ({ayah.numberInSurah})</span>
-              </p>
-              <p style={{ textAlign: translatedEdition[index]?.direction === 'rtl' ? 'right' : 'left' }}>{index + 1}. {translatedAyahList[index]?.text}</p>
-            </div>
-          ))}
-        </div>
-      )}
+            </p>
+            <p style={{ textAlign: translatedEdition[index]?.direction === 'rtl' ? 'right' : 'left' }}>{index + 1}. {translatedAyahList[index]?.text}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
