@@ -15,32 +15,6 @@
   --quran-text-color: #000000;
 }
 
-/* Tajweed Color Rules */
-.tajweed {
-  font-family: var(--quran-font);
-  text-align: justify;
-  line-height: 2;
-  color: var(--quran-text-color);
-}
-
-/* Updated Tajweed colors to match Kitab font */
-.ham_wasl { color: #000000; } /* Hamzat ul Wasl */
-.slnt { color: #000000; } /* Silent letters */
-.madda_normal { color: #000000; } /* Normal Prolongation 2 Vowels */
-.madda_permissible { color: #000000; } /* Permissible Prolongation */
-.madda_necessary { color: #000000; } /* Necessary Prolongation 6 Vowels */
-.qlq { color: #000000; } /* Qalqalah */
-.madda_obligatory { color: #000000; } /* Obligatory Prolongation */
-.ikhf_shfw { color: #000000; } /* Ikhafa Shafawi */
-.ikhf { color: #000000; } /* Ikhafa */
-.idghm_shfw { color: #000000; } /* Idgham Shafawi */
-.iqlb { color: #000000; } /* Iqlab */
-.idgh_ghn { color: #000000; } /* Idgham - With Ghunnah */
-.idgh_w_ghn { color: #000000; } /* Idgham - Without Ghunnah */
-.idgh_mus { color: #000000; } /* Idgham - Mutajanisayn */
-.ghn { color: #000000; } /* Ghunnah 2 Vowels */
-
-/* 15-line Quran Layout */
 .quran-text {
   font-family: var(--quran-font);
   font-size: 32px;
@@ -58,7 +32,7 @@
   flex-direction: column;
   min-height: min-content;
   padding: 0.5rem;
-  background-color: #fff9f0;
+  background-color: #f8f8fa;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   border-radius: 0.5rem;
   margin: 0.5rem auto;
@@ -73,7 +47,6 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('/images/paper-texture.png');
   opacity: 0.05;
   pointer-events: none;
   border-radius: 0.5rem;
@@ -83,15 +56,15 @@
   margin: 0;
   padding: 0.15rem;
   border-radius: 0.25rem;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: #ffffff;
   transition: all 0.2s ease;
   position: relative;
 }
 
 .ayah:hover {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #ffffff;
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
 }
 
 .ayah-number {
@@ -115,7 +88,7 @@
   color: var(--quran-text-color);
   line-height: 1.4;
   padding: 0.5rem;
-  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.03), transparent);
+  background-color: #ffffff;
   border-radius: 0.5rem;
 }
 
@@ -128,6 +101,25 @@
   margin-top: 0.25rem;
   padding-top: 0.25rem;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ayah-end {
+  display: inline-block;
+  font-family: var(--quran-font);
+  font-size: 28px;
+  color: var(--quran-text-color);
+  margin: 0 0.5rem;
+  position: relative;
+}
+
+.ayah-end-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  font-family: var(--quran-font);
+  color: var(--quran-text-color);
 }
 
 /* Responsive adjustments */

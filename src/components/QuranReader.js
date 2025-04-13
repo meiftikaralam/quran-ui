@@ -12,8 +12,8 @@ import { Separator } from '@/components/ui/separator';
 
 const QuranReader = () => {
   const [surahNumber, setSurahNumber] = useState(1);
-  const [ayas, setAyas] = useState([]);
-  const [suraName, setSuraName] = useState('');
+  const [ayahs, setAyahs] = useState([]);
+  const [surahName, setSurahName] = useState('');
   const [juzName, setJuzName] = useState('');
   const [arabicName, setArabicName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +21,91 @@ const QuranReader = () => {
   const { textContext, translationContext } = useContext(EditionContext);
   const { bismillahAyah, loading } = useContext(BismillahContext);
 
-  const fetchAyas = async (surahNumber) => {
+  const processTajweed = (text) => {
+    // Define Tajweed rules and their corresponding CSS classes
+    const tajweedRules = {
+      'ٱ': 'ham_wasl',      // Hamza Wasl
+      'ۡ': 'slnt',          // Sakin
+      'ٓ': 'madda',         // Madda
+      'ۚ': 'qalqalah',      // Qalqalah
+      'ۖ': 'madda_obligatory', // Madda Obligatory
+      'ۢ': 'ikhf_shfw',     // Ikhfa Shafawi
+      'ۗ': 'ghn',           // Ghunnah
+      'ۙ': 'idgham',        // Idgham
+      'ۘ': 'ikhfa',         // Ikhfa
+      'ۛ': 'iqlab',         // Iqlab
+      'ۜ': 'idgham_shafawi', // Idgham Shafawi
+      '۟': 'idgham_mutajanisayn', // Idgham Mutajanisayn
+      '۠': 'idgham_mutamathilayn', // Idgham Mutamathilayn
+      'ۡ': 'idgham_shafawi', // Idgham Shafawi
+      'ۢ': 'ikhfa_shafawi', // Ikhfa Shafawi
+      'ۣ': 'ikhfa_shafawi', // Ikhfa Shafawi
+      'ۤ': 'ikhfa_shafawi', // Ikhfa Shafawi
+      'ۥ': 'ikhfa_shafawi', // Ikhfa Shafawi
+      'ۦ': 'ikhfa_shafawi', // Ikhfa Shafawi
+      'ۧ': 'ikhfa_shafawi', // Ikhfa Shafawi
+      'ۨ': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۩': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۪': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۫': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۬': 'ikhfa_shafawi', // Ikhfa Shafawi
+      'ۭ': 'ikhfa_shafawi', // Ikhfa Shafawi
+      'ۮ': 'ikhfa_shafawi', // Ikhfa Shafawi
+      'ۯ': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۰': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۱': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۲': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۳': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۴': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۵': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۶': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۷': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۸': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۹': 'ikhfa_shafawi', // Ikhfa Shafawi
+      'ۺ': 'ikhfa_shafawi', // Ikhfa Shafawi
+      'ۻ': 'ikhfa_shafawi', // Ikhfa Shafawi
+      'ۼ': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۽': 'ikhfa_shafawi', // Ikhfa Shafawi
+      '۾': 'ikhfa_shafawi', // Ikhfa Shafawi
+      'ۿ': 'ikhfa_shafawi', // Ikhfa Shafawi
+    };
+
+    let result = '';
+    let currentClass = '';
+    let buffer = '';
+
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      const rule = tajweedRules[char];
+
+      if (rule) {
+        // If we have a buffered text and we're changing classes, close the previous span
+        if (buffer && currentClass !== rule) {
+          result += `<span class="${currentClass}">${buffer}</span>`;
+          buffer = '';
+        }
+        currentClass = rule;
+        buffer += char;
+      } else {
+        // If we have a buffered text and we're not in a special character, close the span
+        if (buffer) {
+          result += `<span class="${currentClass}">${buffer}</span>`;
+          buffer = '';
+          currentClass = '';
+        }
+        result += char;
+      }
+    }
+
+    // Handle any remaining buffered text
+    if (buffer) {
+      result += `<span class="${currentClass}">${buffer}</span>`;
+    }
+
+    return result;
+  };
+
+  const fetchAyahs = async (surahNumber) => {
     try {
       setIsLoading(true);
       if (!textContext || !textContext.identifier) {
@@ -32,26 +116,26 @@ const QuranReader = () => {
       const response = await axios.get(`https://api.alquran.cloud/v1/surah/${surahNumber}/editions/${textContext.identifier}`);
       const surahData = response.data.data[0];
       console.log(surahData);
-      setAyas(surahData.ayahs);
-      setSuraName(surahData.englishName);
+      setAyahs(surahData.ayahs);
+      setSurahName(surahData.englishName);
       setArabicName(surahData.name);
       setJuzName(`Juz ${surahData.ayahs[0].juz}`);
     } catch (error) {
-      console.error('Error fetching ayas:', error);
+      console.error('Error fetching ayahs:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchAyas(surahNumber);
+    fetchAyahs(surahNumber);
   }, [surahNumber, textContext, translationContext]);
 
   useEffect(() => {
     if (middleFrameRef.current) {
       middleFrameRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [ayas]);
+  }, [ayahs]);
 
   const changeSurah = (direction) => {
     if (direction === 'left' && surahNumber > 1) {
@@ -65,7 +149,7 @@ const QuranReader = () => {
     <Card className="w-full max-w-5xl mx-auto my-8 shadow-lg">
       <CardHeader className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 pb-4">
         <div className="text-left">
-          <h2 className="text-2xl font-bold">{suraName}</h2>
+          <h2 className="text-2xl font-bold">{surahName}</h2>
           <p className="text-lg text-muted-foreground">{arabicName}</p>
         </div>
         <div className="flex items-center gap-2">
@@ -140,8 +224,11 @@ const QuranReader = () => {
             className="p-8 md:p-12" 
             id="quranText"
             style={{ 
-              direction: textContext?.direction || 'rtl',
-              textAlign: textContext?.direction === 'rtl' ? 'right' : 'left'
+              direction: 'rtl',
+              textAlign: 'right',
+              fontFamily: 'Kitab, serif',
+              fontSize: '1.5rem',
+              lineHeight: '1.8'
             }}
           >
             {isLoading ? (
@@ -158,18 +245,17 @@ const QuranReader = () => {
                     <Separator className="my-6" />
                   </div>
                 )}
-                {ayas.map(ayah => (
+                {ayahs.map(ayah => (
                   <div 
                     key={ayah.number} 
                     className="mb-6 group hover:bg-muted/50 p-2 rounded-md transition-colors"
                   >
                     <div className="flex items-start gap-2">
-                      <span className="text-2xl md:text-3xl font-kitab leading-relaxed">
-                        {ayah.text}
-                      </span>
-                      <span className="text-sm text-muted-foreground mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        ({ayah.numberInSurah})
-                      </span>
+                      <div className="quran-text tajweed" style={{ fontSize: '1.5rem', lineHeight: '1.8' }}>
+                        <span className="ayah-number">{ayah.numberInSurah}</span>
+                        <span dangerouslySetInnerHTML={{ __html: processTajweed(ayah.text) }} />
+                        <span className="ayah-end">۝<span className="ayah-end-number">{ayah.numberInSurah}</span></span>
+                      </div>
                     </div>
                     <Separator className="my-4 opacity-50" />
                   </div>

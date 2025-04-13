@@ -9,11 +9,11 @@ const Surah = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { surah } = location.state || { surah: {} };
-  const [ayahList, setAyahList] = useState([]);
+  const [ayahs, setAyahs] = useState([]);
   const [bismillahAyah, setBismillahAyah] = useState([]);
   const [edition, setEdition] = useState([]);
   const [translatedEdition, setTranslatedEdition] = useState([]);
-  const [translatedAyahList, setTranslatedAyahList] = useState([]);
+  const [translatedAyahs, setTranslatedAyahs] = useState([]);
   const [selectedItem, setSelectedItem] = useState(surah);
   const [loading, setLoading] = useState(false);
   const { textContext, translationContext } = useContext(EditionContext);
@@ -36,11 +36,11 @@ const Surah = () => {
 
     api.get(`/surah/${number}/editions/${textContext.identifier},${translationContext.identifier}`)
       .then(response => {
-        const ayahList = response.data.data[0].ayahs;
+        const ayahs = response.data.data[0].ayahs;
         setEdition(response.data.data[0].edition);
-        const translatedList = response.data.data[1].ayahs;
-        setAyahList(ayahList);
-        setTranslatedAyahList(translatedList);
+        const translatedAyahs = response.data.data[1].ayahs;
+        setAyahs(ayahs);
+        setTranslatedAyahs(translatedAyahs);
         setTranslatedEdition(response.data.data[1].edition);
       })
       .catch(error => {
@@ -142,14 +142,24 @@ const Surah = () => {
       </Card>
 
       <div className="quran-page">
-        {ayahList.map((ayah, index) => (
+        {ayahs.map((ayah, index) => (
           <div key={index} className="ayah">
-            <div className="quran-text tajweed">
+            <div 
+              className="arabic-text"
+              style={{ 
+                direction: 'rtl',
+                textAlign: 'right',
+                fontFamily: 'Kitab, serif',
+                fontSize: '1.5rem',
+                lineHeight: '1.8'
+              }}
+            >
               <span className="ayah-number">{ayah.numberInSurah}</span>
               <span dangerouslySetInnerHTML={{ __html: processTajweed(ayah.text) }} />
+              <span className="ayah-end">۝<span className="ayah-end-number">{ayah.numberInSurah}</span></span>
             </div>
-            <div className="text-base text-muted-foreground mt-2">
-              {translatedAyahList[index]?.text}
+            <div className="translation">
+              {translatedAyahs[index]?.text}
             </div>
           </div>
         ))}
