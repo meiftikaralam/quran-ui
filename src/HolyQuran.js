@@ -13,19 +13,19 @@ export default HolyQuran;
  */
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './HolyQuran.css';
-
-import MultiLineButton from './MultiLineButton.js';
+import api from './lib/axios';
+import { Card, CardContent } from './components/ui/card';
+import { Button } from './components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 function HolyQuran() {
   const [items, setItems] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('https://api.alquran.cloud/v1/meta')
+    api.get('/meta')
       .then(response => {
         setItems(response.data.data.surahs.references);
-        console.log(items);
       })
       .catch(error => {
         console.error('There was an error!', error);
@@ -33,15 +33,31 @@ function HolyQuran() {
   }, []);
 
   return (
-    <div className="body">
-      <div className="thumbnail-container">
+    <div className="container py-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {items.map((item, index) => (
-          <div key={index} className="thumbnail">
-            <MultiLineButton item={item} surahList={items} />
-          </div>
+          <Card key={index} className="hover:shadow-lg transition-shadow">
+            <CardContent className="p-4">
+              <Button
+                variant="ghost"
+                className="w-full h-full text-left"
+                onClick={() => navigate(`/surah`, { state: { surah: item } })}
+              >
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium">{item.number}.</span>
+                    <span className="text-muted-foreground">{item.englishName}</span>
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {item.revelationType} • {item.numberOfAyahs} verses
+                  </div>
+                </div>
+              </Button>
+            </CardContent>
+          </Card>
         ))}
       </div>
-      </div>
+    </div>
   );
 }
 

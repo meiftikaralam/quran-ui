@@ -1,21 +1,20 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import api from './lib/axios';
 import EditionContext from './EditionContext';
-import './App.css';
-import './css/font-kitab.css';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select';
+import { Card, CardContent } from './components/ui/card';
 
 const Surah = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { item, surahList } = location.state || { item: {}, surahList: [] };
+  const { surah } = location.state || { surah: {} };
   const [ayahList, setAyahList] = useState([]);
   const [bismillahAyah, setBismillahAyah] = useState([]);
   const [edition, setEdition] = useState([]);
   const [translatedEdition, setTranslatedEdition] = useState([]);
   const [translatedAyahList, setTranslatedAyahList] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(item);
+  const [selectedItem, setSelectedItem] = useState(surah);
   const [loading, setLoading] = useState(false);
   const { textContext, translationContext } = useContext(EditionContext);
   const [error, setError] = useState(null);
@@ -26,18 +25,16 @@ const Surah = () => {
       return;
     }
 
-    if (item && item.number) {
-      fetchSurahData(item.number);
+    if (surah && surah.number) {
+      fetchSurahData(surah.number);
     }
-  }, [item, textContext, translationContext, navigate]);
+  }, [surah, textContext, translationContext, navigate]);
 
   const fetchSurahData = (number) => {
     setLoading(true);
     setError(null);
-    console.log('textContext', textContext);
-    console.log('translationContext', translationContext);
 
-    axios.get(`https://api.alquran.cloud/v1/surah/${number}/editions/${textContext.identifier},${translationContext.identifier}`)
+    api.get(`/surah/${number}/editions/${textContext.identifier},${translationContext.identifier}`)
       .then(response => {
         const ayahList = response.data.data[0].ayahs;
         setEdition(response.data.data[0].edition);
@@ -48,28 +45,25 @@ const Surah = () => {
       })
       .catch(error => {
         console.error('There was an error!', error);
+        setError(error.message);
       })
       .finally(() => {
         setLoading(false);
       });
 
-      if (number !== 1 && number !== 9) {
-        axios.get(`https://api.alquran.cloud/v1/surah/1/editions/${textContext.identifier}`)
+    if (number !== 1 && number !== 9) {
+      api.get(`/surah/1/editions/${textContext.identifier}`)
         .then(response => {
           const firstAyahList = response.data.data[0].ayahs;
           setBismillahAyah(firstAyahList[0].text);
-          console.log('BismillahAyah:', bismillahAyah);
         })
         .catch(error => {
           console.error('There was an error!', error);
-        })
-        .finally(() => {
-          setLoading(false);
+          setError(error.message);
         });
-      } else {
-        console.log('Clean up bismillahAyah:', bismillahAyah);
-        setBismillahAyah(null);
-      }
+    } else {
+      setBismillahAyah(null);
+    }
   };
 
   const handleSelectionChange = (event) => {
@@ -80,30 +74,45 @@ const Surah = () => {
   };
 
   if (loading) {
-    return <div className='body'>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg text-red-500">Error: {error}</div>
+      </div>
+    );
   }
 
   return (
-    <div className='surah'>
-      <div className="dropdown-container">
-        <select onChange={handleSelectionChange} value={selectedItem ? selectedItem.number : ''}>
-          <option value="" disabled>Select a Surah</option>
-          {surahList.map((surah, index) => (
-            <option key={index} value={surah.number}>{surah.number} - {surah.englishName}</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <h2>Surah #: {selectedItem.number}</h2>
-        <h1 style={{ textAlign: 'center' }}>{selectedItem.name} ({selectedItem.englishName})</h1>
-        <h3 style={{ textAlign: 'center' }}>{bismillahAyah}</h3>
-        {ayahList.map((ayah, index) => (
-          <div key={index}>
-            <p className="font-kitab" style={{ textAlign: edition.direction === 'rtl' ? 'right' : 'left', fontSize: '2em' }}>{ayah.text}
-              <span data-font-scale="3" data-font="code_v1" className="glyph-word"> ({ayah.numberInSurah})</span>
-            </p>
-            <p style={{ textAlign: translatedEdition[index]?.direction === 'rtl' ? 'right' : 'left' }}>{index + 1}. {translatedAyahList[index]?.text}</p>
+    <div className="container py-8">
+      <Card className="mb-8">
+        <CardContent className="p-6">
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-center">Surah #{selectedItem.number}</h2>
+            <h1 className="text-3xl font-bold text-center">{selectedItem.name} ({selectedItem.englishName})</h1>
+            {bismillahAyah && (
+              <h3 className="text-2xl text-center font-arabic">{bismillahAyah}</h3>
+            )}
           </div>
+        </CardContent>
+      </Card>
+
+      <div className="space-y-4">
+        {ayahList.map((ayah, index) => (
+          <Card key={index}>
+            <CardContent className="p-4">
+              <div className="space-y-2">
+                <div className="text-right font-arabic text-2xl">{ayah.text}</div>
+                <div className="text-muted-foreground">{translatedAyahList[index]?.text}</div>
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>
