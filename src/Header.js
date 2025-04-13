@@ -14,6 +14,7 @@ const Header = () => {
       <nav className="right-section">
         <Link to="/home" className="nav-item">Settings</Link>
         <Link to="/quran" className="nav-item">The Holy Quran</Link>
+        <Link to="/read" className="nav-item">Read Quran</Link>
       </nav>
     </header>
   );

@@ -1,0 +1,68 @@
+.quran-tab {
+    font-size: 19px;
+    width: 100%;
+    max-width: 80%;
+    margin: auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .quranPageHeader, .quranPageFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .quranPageHeader div, .quranPageFooter div {
+    display: inline-block;
+  }
+  .quranPageHeader .suraName, .quranPageHeader .juzName {
+    font-weight: bold;
+  }
+  .arrow-link {
+    text-decoration: none;
+    font-size: 1.5em;
+    color: #000;
+    cursor: pointer;
+  }
+  .pageNumber {
+    font-weight: bold;
+  }
+  .qFrame {
+    margin-bottom: 20px;
+  }
+  .qFrameMiddle {
+    height: 400px; /* Set a fixed height for the scrollable area */
+    overflow-y: auto;
+  }
+  .quranText {
+    font-size: 1.5em;
+  }
+
+  .ayah-container {
+    text-align: left; /* or 'right' based on the edition direction */
+    font-size: 1.2em;
+  }
+
+  .ayah {
+    position: relative;
+    display: inline-block; /* Changed to inline-block to ensure hover effect length */
+    margin: 10px 0;
+    transition: background-color 0.3s ease;
+  }
+  .ayahNumber {
+    font-weight: bold;
+  }
+  .selected {
+    background-color: #f0f0f0;
+  }
+  .ayah:hover {
+    background-color: #786;
+  }
+
+  .ayah-separator {
+    height: 1px;
+    background-color: #000;
+    margin: 10px 0;
+  }
+  
