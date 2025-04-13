@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
 import EditionContext from './EditionContext';
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
@@ -10,13 +9,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./components/ui/select";
+import api from './lib/axios';
 
 function Home() {
   const [editions, setEditions] = useState([]);
   const { textContext, setTextContext, translationContext, setTranslationContext } = useContext(EditionContext);
 
   useEffect(() => {
-    axios.get('https://api.alquran.cloud/v1/edition')
+    api.get('/edition')
       .then(response => {
         const filteredEditions = response.data.data.filter(
           edition => edition.identifier === 'bn.bengali' || edition.identifier === 'en.sahih' || edition.identifier === 'hi.hindi'
