@@ -27,12 +27,21 @@ jobs:
           node-version: "18"
           cache: 'npm'
       
-      - name: Install dependencies
+      - name: Clean install
         run: |
-          npm install --force
+          rm -rf node_modules package-lock.json
+          npm cache clean --force
+          npm install
+      
+      - name: Install platform-specific dependencies
+        run: |
+          npm install @rollup/rollup-linux-x64-gnu --save-dev
+          npm install @rollup/rollup-linux-x64-musl --save-dev
       
       - name: Build
-        run: npm run build
+        run: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          npm run build
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
