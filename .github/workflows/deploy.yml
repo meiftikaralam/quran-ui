@@ -24,13 +24,20 @@ jobs:
           node-version: '20'
           cache: 'npm'
       
-      - name: Install
-        run: npm install
+      - name: Clean install
+        run: |
+          rm -rf node_modules package-lock.json
+          npm cache clean --force
+          npm install
+      
+      - name: Install platform-specific dependencies
+        run: |
+          npm install @rollup/rollup-linux-x64-gnu --save-dev
       
       - name: Build
-        run: npm run build
-        env:
-          NODE_OPTIONS: "--max_old_space_size=4096"
+        run: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          npm run build
       
       - name: Configure Pages
         uses: actions/configure-pages@v4
