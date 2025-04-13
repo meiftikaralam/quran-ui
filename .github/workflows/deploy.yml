@@ -36,7 +36,6 @@ jobs:
       - name: Install platform-specific dependencies
         run: |
           npm install @rollup/rollup-linux-x64-gnu --save-dev
-          npm install @rollup/rollup-linux-x64-musl --save-dev
       
       - name: Build
         run: |
