@@ -37,8 +37,6 @@ const QuranReader = () => {
       'ۜ': 'idgham_shafawi', // Idgham Shafawi
       '۟': 'idgham_mutajanisayn', // Idgham Mutajanisayn
       '۠': 'idgham_mutamathilayn', // Idgham Mutamathilayn
-      'ۡ': 'idgham_shafawi', // Idgham Shafawi
-      'ۢ': 'ikhfa_shafawi', // Ikhfa Shafawi
       'ۣ': 'ikhfa_shafawi', // Ikhfa Shafawi
       'ۤ': 'ikhfa_shafawi', // Ikhfa Shafawi
       'ۥ': 'ikhfa_shafawi', // Ikhfa Shafawi
@@ -227,7 +225,7 @@ const QuranReader = () => {
               direction: 'rtl',
               textAlign: 'right',
               fontFamily: 'Kitab, serif',
-              fontSize: '1.5rem',
+              fontSize: '1.25rem',
               lineHeight: '1.8'
             }}
           >
@@ -251,7 +249,7 @@ const QuranReader = () => {
                     className="mb-6 group hover:bg-muted/50 p-2 rounded-md transition-colors"
                   >
                     <div className="flex items-start gap-2">
-                      <div className="quran-text tajweed" style={{ fontSize: '1.5rem', lineHeight: '1.8' }}>
+                      <div className="quran-text tajweed" style={{ fontSize: '1.25rem', lineHeight: '1.8' }}>
                         <span className="ayah-number">{ayah.numberInSurah}</span>
                         <span dangerouslySetInnerHTML={{ __html: processTajweed(ayah.text) }} />
                         <span className="ayah-end">۝<span className="ayah-end-number">{ayah.numberInSurah}</span></span>
