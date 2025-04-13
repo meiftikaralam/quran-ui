@@ -15,12 +15,11 @@ function App() {
   return (
   <EditionProvider>
     <BismillahProvider>
-    <Router>
+    <Router basename="/">
       <div className="App">
         <Header />
         <Routes>
           <Route path="/" element={<Welcome />} />
-          <Route path="/quran-ui" element={<Welcome />} />
           <Route path="/home" element={<Home />} />
           <Route path="/quran" element={<HolyQuran />} />
           <Route path="/surah" element={<Surah />} />

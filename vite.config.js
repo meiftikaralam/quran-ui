@@ -30,6 +30,7 @@ export default defineConfig({
         main: path.resolve(__dirname, 'index.html'),
       },
     },
+    sourcemap: true,
   },
   server: {
     historyApiFallback: true,
