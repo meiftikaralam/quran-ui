@@ -1,0 +1,157 @@
+@font-face {
+  font-family: 'Kitab';
+  src: url("//cdn.alquran.cloud/public/fonts/Kitab-Regular.ttf");
+}
+
+@font-face {
+  font-family: 'Kitab Bold';
+  src: url("//cdn.alquran.cloud/public/fonts/Kitab-Bold.ttf");
+}
+
+/* Arabic Font Stack */
+:root {
+  --quran-font: 'Kitab', system-ui, -apple-system, sans-serif;
+  --quran-font-bold: 'Kitab Bold', system-ui, -apple-system, sans-serif;
+  --quran-text-color: #000000;
+}
+
+/* Tajweed Color Rules */
+.tajweed {
+  font-family: var(--quran-font);
+  text-align: justify;
+  line-height: 2.5;
+  color: var(--quran-text-color);
+}
+
+/* Updated Tajweed colors to match Kitab font */
+.ham_wasl { color: #000000; } /* Hamzat ul Wasl */
+.slnt { color: #000000; } /* Silent letters */
+.madda_normal { color: #000000; } /* Normal Prolongation 2 Vowels */
+.madda_permissible { color: #000000; } /* Permissible Prolongation */
+.madda_necessary { color: #000000; } /* Necessary Prolongation 6 Vowels */
+.qlq { color: #000000; } /* Qalqalah */
+.madda_obligatory { color: #000000; } /* Obligatory Prolongation */
+.ikhf_shfw { color: #000000; } /* Ikhafa Shafawi */
+.ikhf { color: #000000; } /* Ikhafa */
+.idghm_shfw { color: #000000; } /* Idgham Shafawi */
+.iqlb { color: #000000; } /* Iqlab */
+.idgh_ghn { color: #000000; } /* Idgham - With Ghunnah */
+.idgh_w_ghn { color: #000000; } /* Idgham - Without Ghunnah */
+.idgh_mus { color: #000000; } /* Idgham - Mutajanisayn */
+.ghn { color: #000000; } /* Ghunnah 2 Vowels */
+
+/* 15-line Quran Layout */
+.quran-text {
+  font-family: var(--quran-font);
+  font-size: 32px;
+  line-height: 2.5;
+  text-align: justify;
+  direction: rtl;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  color: var(--quran-text-color);
+}
+
+.quran-page {
+  display: grid;
+  grid-template-rows: repeat(15, minmax(0, 1fr));
+  min-height: calc(100vh - 4rem);
+  gap: 0.5rem;
+  padding: 2rem;
+  background-color: #fff9f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  margin: 2rem auto;
+  max-width: 1000px;
+  position: relative;
+}
+
+.quran-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/paper-texture.png');
+  opacity: 0.05;
+  pointer-events: none;
+  border-radius: 0.5rem;
+}
+
+.ayah {
+  margin: 0;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.ayah:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+.ayah-number {
+  font-family: var(--quran-font);
+  color: #333333;
+  font-size: 0.8em;
+  margin-right: 0.5rem;
+  background-color: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  display: inline-block;
+  min-width: 2rem;
+  text-align: center;
+}
+
+.bismillah {
+  font-family: var(--quran-font-bold);
+  font-size: 42px;
+  text-align: center;
+  margin: 2rem 0;
+  color: var(--quran-text-color);
+  line-height: 2;
+  padding: 1rem;
+  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.03), transparent);
+  border-radius: 0.5rem;
+}
+
+/* Translation text */
+.translation-text {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333333;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .quran-text {
+    font-size: 28px;
+    padding: 1rem;
+  }
+  
+  .quran-page {
+    padding: 1rem;
+    margin: 1rem;
+  }
+  
+  .bismillah {
+    font-size: 36px;
+  }
+  
+  .ayah {
+    padding: 0.5rem;
+  }
+  
+  .translation-text {
+    font-size: 14px;
+  }
+} 

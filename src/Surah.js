@@ -2,8 +2,8 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from './lib/axios';
 import EditionContext from './EditionContext';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select';
 import { Card, CardContent } from './components/ui/card';
+import './styles/quran.css';
 
 const Surah = () => {
   const location = useLocation();
@@ -66,6 +66,44 @@ const Surah = () => {
     }
   };
 
+  const processTajweed = (text) => {
+    // This is a simplified version. In a production environment,
+    // you would use a proper Tajweed parsing library
+    const rules = {
+      'ٱ': 'ham_wasl',
+      'ۡ': 'slnt',
+      'ٓ': 'madda_necessary',
+      'ۚ': 'qalqalah',
+      'ۖ': 'madda_obligatory',
+      'ۢ': 'ikhf_shfw',
+      'ۗ': 'ghn'
+    };
+
+    let result = '';
+    let currentClass = '';
+    
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      const rule = rules[char];
+      
+      if (rule) {
+        if (currentClass) {
+          result += '</span>';
+        }
+        currentClass = rule;
+        result += `<span class="${rule}">`;
+      }
+      
+      result += char;
+      
+      if (rule && i === text.length - 1) {
+        result += '</span>';
+      }
+    }
+    
+    return result;
+  };
+
   const handleSelectionChange = (event) => {
     const itemNumber = event.target.value;
     const selected = surahList.find(surah => surah.number.toString() === itemNumber);
@@ -97,22 +135,23 @@ const Surah = () => {
             <h2 className="text-2xl font-bold text-center">Surah #{selectedItem.number}</h2>
             <h1 className="text-3xl font-bold text-center">{selectedItem.name} ({selectedItem.englishName})</h1>
             {bismillahAyah && (
-              <h3 className="text-2xl text-center font-arabic">{bismillahAyah}</h3>
+              <h3 className="bismillah" dangerouslySetInnerHTML={{ __html: processTajweed(bismillahAyah) }} />
             )}
           </div>
         </CardContent>
       </Card>
 
-      <div className="space-y-4">
+      <div className="quran-page">
         {ayahList.map((ayah, index) => (
-          <Card key={index}>
-            <CardContent className="p-4">
-              <div className="space-y-2">
-                <div className="text-right font-arabic text-2xl">{ayah.text}</div>
-                <div className="text-muted-foreground">{translatedAyahList[index]?.text}</div>
-              </div>
-            </CardContent>
-          </Card>
+          <div key={index} className="ayah">
+            <div className="quran-text tajweed">
+              <span className="ayah-number">{ayah.numberInSurah}</span>
+              <span dangerouslySetInnerHTML={{ __html: processTajweed(ayah.text) }} />
+            </div>
+            <div className="text-base text-muted-foreground mt-2">
+              {translatedAyahList[index]?.text}
+            </div>
+          </div>
         ))}
       </div>
     </div>
