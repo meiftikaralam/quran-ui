@@ -1,13 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './App.css';
 import logo from './assets/alameducity.png';
 
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <header className="header">
       <div className="left-section">
-        <img src={logo} alt="alameducity.com" width="100" height="100" />
+        <img 
+          src={logo} 
+          alt="alameducity.com" 
+          width="100" 
+          height="100" 
+          style={{ cursor: 'pointer' }}
+          onClick={() => navigate('/')}
+        />
         <br/>
         <span className="tagline">Learn, Excel & Enlighten</span>
       </div>
